@@ -5,7 +5,8 @@ import os
 # use json library to read data passsed back and the web serv
 import sys
 import json
-import pprint
+import io
+import logging
 
 # Hide your keys protect it with your life
 from dotenv import load_dotenv
