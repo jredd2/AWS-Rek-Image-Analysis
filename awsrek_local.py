@@ -1,62 +1,37 @@
-# The main point of this code is to show how to call the Computer Vision API from Python
-
 import boto3
+import tkinter as tk
+from tkinter import filedialog
 
-def initialize_rekognition_client():
-    # Initialize the AWS Rekognition client with your AWS credentials.
-    # Make sure your AWS credentials are configured using AWS CLI or environment variables.
-    rekognition = boto3.client('rekognition', region_name='us-east-1')
-    return rekognition
+def detect_labels_local_file(photo):
+    client = boto3.client('rekognition')
+    with open(photo, 'rb') as image:
+        response = client.detect_labels(Image={'Bytes': image.read()})
+    return response['Labels']
 
-def analyze_local_image(rekognition, image_path):
-    try:
-        with open(image_path, 'rb') as image_file:
-            # Use the detect_labels API to analyze the image and detect labels.
-            response = rekognition.detect_labels(
-                Image={
-                    'Bytes': image_file.read()
-                },
-                MaxLabel=10,
-                MinConfidence=75,
-                Features=[
-                    'GENERAL_LABELS',
-                    'IMAGE_PROPERTIES',
-                ],
-                Settings={
-                    'General Labels': {
-                        'LabelInclusionFilters': [
-                            'Human','Car','Person',
-                        ],
-                        'LabelExclusionFilters':[
-                            'Clothing',
-                        ],
-                        'LabelCategoryInclusionFilters':[
-                            'Animal and Pets',
-                        ],
-                        'LabelCategoryExclusionFilters':[
-                            'Outdoors',
-                        ]
-                    },
-                    'ImageProperties':{
-                        'MaxDominantColors': 10
-                    }
-                }
-            )
-            print(response)
-            # Display moderation labels
-            print("Image Properties for {}: ".format(image_path))
-            for label in response['ModerationLabels']:
-                print("- {} (Confidence: {}%)".format(label['Name'], label['Confidence']))
+def analyze_image():
+    image_path = filedialog.askopenfilename()
+    if not image_path:
+        return
 
-    except Exception as e:
-        print("Error analyzing the image: {}".format(e))
+    labels = detect_labels_local_file(image_path)
 
-if __name__ == "__main__":
-    # Initialize the Rekognition client
-    rekognition = initialize_rekognition_client()
+    result_text.config(state=tk.NORMAL)
+    result_text.delete(1.0, tk.END)
+    result_text.insert(tk.END, "Detected labels in " + image_path + "\n\n")
+    for label in labels:
+        result_text.insert(tk.END, label['Name'] + ' : ' + str(label['Confidence']) + "\n")
+    result_text.config(state=tk.DISABLED)
 
-    # List of local image paths to analyze
-    image_paths = ["/Users/jessiereddjr./Documents/Docker-Logo-2013.png"]  # Add your image file paths here
+# Create the main GUI window
+root = tk.Tk()
+root.title("Image Label Detection")
 
-    for image_path in image_paths:
-        analyze_local_image(rekognition, image_path)
+# Create and configure the GUI components
+file_button = tk.Button(root, text="Select Image", command=analyze_image)
+file_button.pack(pady=10)
+result_text = tk.Text(root, height=10, width=50, state=tk.DISABLED)
+result_text.pack()
+
+
+# Start the GUI main loop
+root.mainloop()
