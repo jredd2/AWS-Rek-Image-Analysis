@@ -33,6 +33,7 @@ jobs:
           python-version: '3.9'
           cache: 'pip'
           cache-dependency-path: '**/awsrek_local.py'
+      - run: pip3 install Tk interface
       - run: pip install -r requirements.txt
 
       - id: pythonapp
