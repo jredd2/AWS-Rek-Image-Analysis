@@ -38,5 +38,5 @@ jobs:
 
       - id: pythonapp
         name: Python App Execution
-        run: pythonapp execute awsrek_local.py
+        run: python3 awsrek_local.py
         shell: bash 
