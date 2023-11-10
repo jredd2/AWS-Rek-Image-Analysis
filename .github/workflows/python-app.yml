@@ -34,7 +34,7 @@ jobs:
           cache: 'pip'
       - run: pip install -r requirements.txt
 
-      - id: python app
+      - id: pythonapp
         name: Python App Execution
         run: python execute awsrek_local.py
         shell: bash 
