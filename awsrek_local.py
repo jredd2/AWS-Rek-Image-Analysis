@@ -22,6 +22,15 @@ def analyze_image():
         result_text.insert(tk.END, label['Name'] + ' : ' + str(label['Confidence']) + "\n")
     result_text.config(state=tk.DISABLED)
 
+def main():
+    try:
+        root = tk.Tk()
+        # Your existing GUI-related code here
+    except tk.TclError as e:
+        # Catch the TclError and show an error message without GUI
+        print(f"Error: {e}")
+        messagebox.showerror("Error", str(e))
+
 # Create the main GUI window
 root = tk.Tk()
 root.title("Image Label Detection")
