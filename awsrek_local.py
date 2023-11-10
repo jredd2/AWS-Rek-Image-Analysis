@@ -29,15 +29,15 @@ def display_labels(image_path, labels):
         result_text.insert(tk.END, label['Name'] + ' : ' + str(label['Confidence']) + "\n")
     result_text.config(state=tk.DISABLED)
 
- Create the main GUI window
+# Create the main GUI window
 root = tk.Tk()
 root.title("Image Label Detection")
 
- Create and configure the GUI components
+# Create and configure the GUI components
 file_button = tk.Button(root, text="Select Image", command=analyze_image)
 file_button.pack(pady=10)
 result_text = tk.Text(root, height=10, width=50, state=tk.DISABLED)
 result_text.pack()
 
- Start the GUI main loop
+# Start the GUI main loop
 root.mainloop()
