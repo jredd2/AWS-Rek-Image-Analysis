@@ -1,3 +1,2 @@
 boto3
-tkinter
-python3-tk
+
