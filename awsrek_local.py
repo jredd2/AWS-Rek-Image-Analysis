@@ -1,6 +1,6 @@
 import boto3
 import tkinter as tk
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 
 def detect_labels_local_file(photo):
     client = boto3.client('rekognition')
@@ -13,23 +13,21 @@ def analyze_image():
     if not image_path:
         return
 
-    labels = detect_labels_local_file(image_path)
+    try:
+        labels = detect_labels_local_file(image_path)
+        display_labels(image_path, labels)
+    except tk.TclError as e:
+        # Catch the TclError and show an error message without GUI
+        print(f"Error: {e}")
+        messagebox.showerror("Error", str(e))
 
+def display_labels(image_path, labels):
     result_text.config(state=tk.NORMAL)
     result_text.delete(1.0, tk.END)
     result_text.insert(tk.END, "Detected labels in " + image_path + "\n\n")
     for label in labels:
         result_text.insert(tk.END, label['Name'] + ' : ' + str(label['Confidence']) + "\n")
     result_text.config(state=tk.DISABLED)
-
-def main():
-    try:
-        root = tk.Tk()
-        # Your existing GUI-related code here
-    except tk.TclError as e:
-        # Catch the TclError and show an error message without GUI
-        print(f"Error: {e}")
-        messagebox.showerror("Error", str(e))
 
 # Create the main GUI window
 root = tk.Tk()
@@ -40,7 +38,6 @@ file_button = tk.Button(root, text="Select Image", command=analyze_image)
 file_button.pack(pady=10)
 result_text = tk.Text(root, height=10, width=50, state=tk.DISABLED)
 result_text.pack()
-
 
 # Start the GUI main loop
 root.mainloop()
