@@ -21,13 +21,13 @@ def analyze_image():
         print(f"Error: {e}")
         messagebox.showerror("Error", str(e))
 
-def display_labels(image_path, labels):
-    result_text.config(state=tk.NORMAL)
-    result_text.delete(1.0, tk.END)
-    result_text.insert(tk.END, "Detected labels in " + image_path + "\n\n")
-    for label in labels:
-        result_text.insert(tk.END, label['Name'] + ' : ' + str(label['Confidence']) + "\n")
-    result_text.config(state=tk.DISABLED)
+#def display_labels(image_path, labels):
+    #result_text.config(state=tk.NORMAL)
+    #result_text.delete(1.0, tk.END)
+    #result_text.insert(tk.END, "Detected labels in " + image_path + "\n\n")
+   # for label in labels:
+       # result_text.insert(tk.END, label['Name'] + ' : ' + str(label['Confidence']) + "\n")
+   # result_text.config(state=tk.DISABLED)
 
 # Create the main GUI window
 root = tk.Tk()
