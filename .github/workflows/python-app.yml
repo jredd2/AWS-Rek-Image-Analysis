@@ -3,7 +3,7 @@
 
 # This is a basic workflow to help you get started with Actions
 
-name: Netflix Jupyter
+name: AWS Rek App
 
 # Controls when the workflow will run
 on:
