@@ -40,4 +40,4 @@ result_text = tk.Text(root, height=10, width=50, state=tk.DISABLED)
 result_text.pack()
 
 # Start the GUI main loop
-root.mainloop()
+#root.mainloop()
